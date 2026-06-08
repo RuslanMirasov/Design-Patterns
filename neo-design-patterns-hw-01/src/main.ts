@@ -14,7 +14,7 @@ const ebook = new EBook(
   "Digital Book",
   2021,
   author,
-  "https://example.com/ebook"
+  "https://example.com/ebook",
 );
 
 // Створення копій
