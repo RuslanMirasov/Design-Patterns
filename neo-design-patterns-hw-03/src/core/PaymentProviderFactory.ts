@@ -1,5 +1,5 @@
-import { PaymentProvider } from './PaymentProvider';
+import { PaymentProvider } from "./PaymentProvider";
 
 export interface PaymentProviderFactory {
   createPaymentProvider(): PaymentProvider;
-} 
+}

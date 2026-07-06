@@ -1,28 +1,30 @@
+import { PaymentProviderFactory } from "./core/PaymentProviderFactory";
 import { StripeFactory } from "./providers/stripe/StripeFactory";
 import { PaypalFactory } from "./providers/paypal/PaypalFactory";
 import { AppleFactory } from "./providers/apple/AppleFactory";
 import { PaymentContext } from "./app/PaymentContext";
 
-// Отримуємо провайдера з командного рядка
-const provider = process.argv[2]?.toLowerCase() || "stripe";
+const providerType = process.argv[2];
 
-// Створюємо відповідну фабрику
-let factory;
-switch (provider) {
+let factory: PaymentProviderFactory;
+
+switch (providerType) {
   case "stripe":
     factory = new StripeFactory();
     break;
+
   case "paypal":
     factory = new PaypalFactory();
     break;
+
   case "apple":
     factory = new AppleFactory();
     break;
+
   default:
-    console.error(`Unknown provider: ${provider}. Using Stripe as default.`);
-    factory = new StripeFactory();
+    throw new Error("Unknown payment provider");
 }
 
-// Створюємо контекст та обробляємо платіж
 const context = new PaymentContext(factory);
+
 context.processPayment(100);

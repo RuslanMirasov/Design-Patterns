@@ -1,90 +1,37 @@
-# Домашнє завдання до Теми Породжувальні патерни: Фабрика й Абстрактна фабрика
+# Звіт з виконання ДЗ-3: Factory Method / Abstract Factory
 
-У реальних застосунках робота з платіжними системами — це завжди про змінність, залежності й масштабованість. У цьому завданні ви навчитеся відділяти створення об’єктів від їх використання за допомогою **патернів Factory Method і Abstract Factory**, що дає змогу будувати гнучкі, модульні та розширювані системи. Це базовий крок до створення архітектур, які легко адаптуються під зміну бізнес-вимог і технологій.
+## Використані патерни
 
-### Опис завдання
+- **Factory Method** — кожна `XxxFactory` інкапсулює `new XxxPaymentProvider()` за методом
+  `createPaymentProvider()`. `PaymentContext` ніколи не викликає `new` напряму.
+- **Abstract Factory** — інтерфейс `PaymentProviderFactory` є єдиною точкою створення провайдера,
+  завдяки чому `PaymentContext` і `main.ts` працюють з будь-яким провайдером однаково.
 
-Необхідно реалізувати імітаційну архітектуру платіжної системи, яка підтримує кілька провайдерів: `Stripe`, `PayPal` і `ApplePay`. Кожен провайдер реалізує однакову функціональність: `authorize → capture → refund`.
+## Ключові рішення
 
-Завдання полягає в застосуванні патернів Factory Method та Abstract Factory, щоб:
+- `PaymentContext` отримує фабрику в конструкторі, а сам провайдер створює всередині
+  `processPayment()` — так фабричний метод викликається саме в момент виконання операції.
+- `transactionId` генерується випадково (`Math.random().toString(36)`) для кожного платежу.
+- `main.ts` обирає фабрику за аргументом командного рядка; невідомий провайдер призводить до
+  помилки (fail-fast).
 
-- відокремити логіку створення об’єктів;
-- спростити розширення системи новими провайдерами;
-- приховати використання `new` за фабричним шаром.
+## Перевірка результату
 
-Це завдання не передбачає використання реальних платіжних систем чи SDK. Реалізація платіжних сервісів є імітацією і виконується через `console.log`.
-
-Приклад:
-
-```tsx
-console.log(`[Stripe] Authorizing $${amount}`);
-...
-console.log(`[ApplePay] Refunding transaction ${transactionId}`);
-```
-
-### Завдання
-
-## Структура проєкту
+Проєкт компілюється без помилок і перевірений запуском для всіх трьох провайдерів:
 
 ```
-/src
-  /core
-    PaymentProvider.ts        # Інтерфейс платіжного провайдера
-    PaymentProviderFactory.ts # Інтерфейс фабрики провайдерів
-  /providers
-    /stripe
-      StripePaymentProvider.ts # Реалізація Stripe провайдера
-      StripeFactory.ts         # Фабрика для Stripe
-    /paypal
-      PaypalPaymentProvider.ts # Реалізація PayPal провайдера
-      PaypalFactory.ts         # Фабрика для PayPal
-    /apple
-      ApplePaymentProvider.ts  # Реалізація Apple Pay провайдера
-      AppleFactory.ts          # Фабрика для Apple Pay
-  /app
-    PaymentContext.ts         # Контекст для роботи з провайдерами
-  main.ts                    # Приклад використання
-package.json
-tsconfig.json
+$ npx ts-node src/main.ts stripe
+[Stripe] Authorizing $100
+[Stripe] Capturing transaction k8ffoi
+[Stripe] Refunding transaction k8ffoi
+
+$ npx ts-node src/main.ts paypal
+[PayPal] Authorizing $100
+[PayPal] Capturing transaction 8nrsjg
+[PayPal] Refunding transaction 8nrsjg
+
+$ npx ts-node src/main.ts apple
+[ApplePay] Authorizing $100
+[ApplePay] Capturing transaction ea9m9f
+[ApplePay] Refunding transaction ea9m9f
 ```
-
-### Очікуваний результат
-
-- Усі класи `XxxPaymentProvider` реалізують `PaymentProvider`;
-- Усі класи `XxxFactory` реалізують `PaymentProviderFactory`;
-- Клас `PaymentContext` працює з будь-якою фабрикою через інтерфейс;
-- В `main.ts` реалізовано сценарій повного платіжного циклу з обраним провайдером;
-- Весь код типізовано, він не використовує `new` поза фабриками, і легко розширюється.
-
-## Застосовані патерни
-
-### Factory Method
-
-- Використовується для створення конкретних платіжних провайдерів
-- Кожен провайдер (Stripe, PayPal, Apple Pay) має свою фабрику
-- Фабрики реалізують інтерфейс `PaymentProviderFactory`
-
-### Abstract Factory
-
-- Інтерфейс `PaymentProviderFactory` визначає спосіб створення провайдерів
-- Дозволяє створювати сімейства пов'язаних об'єктів
-- Забезпечує можливість легко додавати нові провайдери
-
-## Запуск проекту
-
-```bash
-# Запуск з Stripe провайдером
-npx ts-node src/main.ts stripe
-
-# Запуск з PayPal провайдером
-npx ts-node src/main.ts paypal
-
-# Запуск з Apple Pay провайдером
-npx ts-node src/main.ts apple
-```
-
-При запуску програма:
-
-1. Створює відповідну фабрику провайдера
-2. Ініціалізує контекст платежів
-3. Виконує повний цикл операцій (authorize, capture, refund)
