@@ -6,6 +6,12 @@
 
 Кожен приклад подано як реалістичну задачу з практичного TypeScript-контексту. Ваше завдання — проаналізувати початковий код та застосувати відповідний патерн, переписавши реалізацію.
 
+## Патерни
+
+- **Одинак (Singleton)** — `src/singleton` — гарантує єдиний екземпляр `AppConfigService` у всій системі.
+- **Будівельник (Builder)** — `src/builder` — покроково формує текстовий документ через `DocumentBuilder`.
+- **Прототип (Prototype)** — `src/prototype` — клонує профіль користувача `UserProfile` через `clone()` із глибоким копіюванням `permissions`.
+
 ## Структура проєкту
 
 ```
@@ -14,8 +20,11 @@ src/
 │   ├── DocumentBuilder.ts
 │   └── main.ts
 ├── prototype/        # Prototype pattern implementation
+│   ├── UserProfilePrototype.ts
+│   ├── UserProfile.ts
 │   └── main.ts
 └── singleton/        # Singleton pattern implementation
+    ├── AppConfigService.ts
     └── main.ts
 ```
 
@@ -49,4 +58,12 @@ npm run singleton
 
 ```bash
 npm run dev
+```
+
+Альтернативно кожен приклад можна запустити напряму через `ts-node`:
+
+```bash
+npx ts-node src/singleton/main.ts
+npx ts-node src/builder/main.ts
+npx ts-node src/prototype/main.ts
 ```
