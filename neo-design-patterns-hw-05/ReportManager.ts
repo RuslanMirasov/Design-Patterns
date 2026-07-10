@@ -18,5 +18,35 @@ export class ReportManager {
     this.facade = new AnalyzerFacade(this.adapter);
   }
 
-  // TODO: Implement the ReportManager class
+  generateReport(targetPath: string): void {
+    try {
+      const content = this.facade.generateReport(targetPath);
+
+      const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+      const fileName = `report-${timestamp}.${this.fileExtension}`;
+      const filePath = path.join(ReportManager.REPORTS_DIR, fileName);
+
+      fs.writeFileSync(filePath, content);
+      console.log(`Report generated successfully: ${filePath}`);
+    } catch (error) {
+      console.error("Failed to generate report:", error);
+    }
+  }
+
+  private initReportsDirectory(): void {
+    if (!fs.existsSync(ReportManager.REPORTS_DIR)) {
+      fs.mkdirSync(ReportManager.REPORTS_DIR);
+    }
+  }
+
+  private getAdapter(format: string): [ReportAdapter, string] {
+    switch (format.toLowerCase()) {
+      case "csv":
+        return [new CsvReportAdapter(), "csv"];
+      case "xml":
+        return [new XmlReportAdapter(), "xml"];
+      default:
+        return [new JsonReportAdapter(), "json"];
+    }
+  }
 }
