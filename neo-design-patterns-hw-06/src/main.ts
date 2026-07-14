@@ -1,5 +1,5 @@
-import { MessageService } from './MessageService';
-import { createRateLimitProxy } from './RateLimitProxy';
+import { MessageService } from "./MessageService";
+import { createRateLimitProxy } from "./RateLimitProxy";
 
 const messageService = new MessageService();
 // Обмежуємо відправку до 1 повідомлення в секунду
@@ -12,5 +12,5 @@ service.send("Чому не відповідаєш?");
 
 // Чекаємо секунду і надсилаємо знову
 setTimeout(() => {
-    service.send("Це повідомлення вже пройде, бо ми почекали 1 секунду");
-}, 1100); 
+  service.send("Це повідомлення вже пройде, бо ми почекали 1 секунду");
+}, 1100);
