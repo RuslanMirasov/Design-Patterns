@@ -3,4 +3,5 @@ export interface DocRenderer {
   renderParagraph(text: string): string;
   renderList(items: string[]): string;
   wrapDocument(content: string): string;
-} 
+}
+ 

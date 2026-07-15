@@ -66,3 +66,29 @@ npx ts-node src/main.ts markdown
 [Summary] Rendered 2 sections, 3 paragraphs, 2 lists
 [Performance] Total render time: 12ms
 ```
+
+## Як створити нового підписника
+
+Достатньо реалізувати інтерфейс `RenderEventSubscriber` і підписати екземпляр на `RenderEventPublisher` перед генерацією документа:
+
+```ts
+import { RenderEventSubscriber } from "./interfaces/RenderEventSubscriber";
+import { RenderContext } from "./interfaces/RenderContext";
+
+export class NotificationSubscriber implements RenderEventSubscriber {
+  update(context: RenderContext): void {
+    if (context.type === "Section") {
+      console.log(`[Notify] Нова секція: ${context.content}`);
+    }
+  }
+}
+```
+
+```ts
+import { RenderEventPublisher } from "./RenderEventPublisher";
+import { NotificationSubscriber } from "./NotificationSubscriber";
+
+RenderEventPublisher.subscribe(new NotificationSubscriber());
+```
+
+Видавцю (`Section`, `Paragraph`, `List`) не потрібно нічого знати про нового підписника — він просто отримає `update(context)` разом з усіма іншими під час наступного `notify()`.
