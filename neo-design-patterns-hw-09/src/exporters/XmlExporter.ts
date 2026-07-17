@@ -1,15 +1,25 @@
 import { DataExporter } from "./DataExporter";
-import { writeFileSync, existsSync, mkdirSync } from "fs";
-import { dirname } from "path";
 
 export class XmlExporter extends DataExporter {
   protected render(): string {
-    // TODO
+    const users = this.data
+      .map(
+        (user) => `  <user>
+    <id>${user.id}</id>
+    <name>${user.name}</name>
+    <email>${user.email}</email>
+    <phone>${user.phone}</phone>
+  </user>`
+      )
+      .join("\n");
+    return `<?xml version="1.0" encoding="UTF-8"?>\n<users>\n${users}\n</users>`;
   }
 
-  // TODO afterRender
+  protected afterRender(): void {
+    this.result += `\n<!-- Експорт згенеровано: ${new Date().toISOString()} -->`;
+  }
 
   protected save(): void {
-    // TODO
+    this.saveToFile("users.xml");
   }
 }

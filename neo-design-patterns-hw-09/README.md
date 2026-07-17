@@ -149,3 +149,25 @@ id,name,email,phone
 ```
 
 Для всіх трьох форматів CSV, JSON, XML обхід повинен працювати однаково — по одному користувачу за ітерацію.
+
+## Як це реалізовано
+
+`DataExporter` — абстрактний клас з методом `export()`, який і є шаблонним методом: викликає кроки `load → transform → beforeRender → render → afterRender → save` завжди в одному порядку. `load` і `transform` спільні для всіх форматів і живуть у базовому класі, `beforeRender`/`afterRender` — hook-и з пустою реалізацією за замовчуванням. `render` і `save` — абстрактні, кожен формат реалізує їх по-своєму: `CsvExporter` збирає рядки через кому, `JsonExporter` робить `JSON.stringify`, `XmlExporter` будує XML-теги. `XmlExporter` додатково перевизначає `afterRender`, щоб дописати коментар з датою генерації в кінець файлу.
+
+Щоб додати новий формат (наприклад PDF), достатньо створити клас, що наслідується від `DataExporter`, і реалізувати в ньому `render()` та `save()`. Решту алгоритму чіпати не потрібно.
+
+Ітератори (`CsvIterator`, `JsonIterator`, `XmlIterator`) при створенні одразу читають свій файл і розбирають його у масив `UserData`. Кожен реалізує `[Symbol.iterator]()` через генератор, тому об'єкт можна одразу обходити через `for...of`, як у прикладі нижче:
+
+```ts
+for (const user of new CsvIterator('./dist/users.csv')) {
+  console.log(user);
+}
+```
+
+**Запуск демонстрації ітераторів:**
+
+```
+npx ts-node ./src/main-iterate.ts
+```
+
+Файли `dist/users.csv`, `dist/users.json`, `dist/users.xml` мають бути вже створені (тобто спочатку запускаємо `main.ts`, потім `main-iterate.ts`).
