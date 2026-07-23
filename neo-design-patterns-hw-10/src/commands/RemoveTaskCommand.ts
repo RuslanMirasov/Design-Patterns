@@ -5,15 +5,20 @@ import { Task } from "../models/Task";
 export class RemoveTaskCommand extends AbstractCommand {
   private removedTask: Task | undefined;
 
-  constructor(private taskList: TaskList, private taskId: string) {
+  constructor(
+    private taskList: TaskList,
+    private taskId: string,
+  ) {
     super();
   }
 
   execute(): void {
-    // TODO
+    this.removedTask = this.taskList.removeTask(this.taskId);
   }
 
   undo(): void {
-    // TODO
+    if (this.removedTask) {
+      this.taskList.addTask(this.removedTask);
+    }
   }
 }

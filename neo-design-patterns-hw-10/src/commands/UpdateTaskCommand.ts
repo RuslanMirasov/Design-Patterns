@@ -8,16 +8,25 @@ export class UpdateTaskCommand extends AbstractCommand {
   constructor(
     private taskList: TaskList,
     private taskId: string,
-    private updates: Partial<Task>
+    private updates: Partial<Task>,
   ) {
     super();
   }
 
   execute(): void {
-    // TODO
+    const task = this.taskList
+      .getAllTasks()
+      .find((t) => t.id === this.taskId);
+
+    if (task) {
+      this.oldTask = { ...task };
+      this.taskList.updateTask(this.taskId, this.updates);
+    }
   }
 
   undo(): void {
-    // TODO
+    if (this.oldTask) {
+      this.taskList.updateTask(this.taskId, this.oldTask);
+    }
   }
 }

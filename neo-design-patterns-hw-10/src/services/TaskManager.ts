@@ -1,6 +1,7 @@
 import { TaskList } from "../models/TaskList";
 import { CommandHistory } from "../commands/CommandHistory";
 import { Task } from "../models/Task";
+
 import { AddTaskCommand } from "../commands/AddTaskCommand";
 import { RemoveTaskCommand } from "../commands/RemoveTaskCommand";
 import { UpdateTaskCommand } from "../commands/UpdateTaskCommand";
@@ -17,20 +18,26 @@ export class TaskManager {
       completed: false,
       ...task,
     };
+
     this.history.executeCommand(new AddTaskCommand(this.taskList, newTask));
+
     return newTask.id;
   }
 
   removeTask(id: string): void {
-    // TODO
+    this.history.executeCommand(new RemoveTaskCommand(this.taskList, id));
   }
 
   updateTask(id: string, updates: Partial<Task>): void {
-    // TODO
+    this.history.executeCommand(
+      new UpdateTaskCommand(this.taskList, id, updates),
+    );
   }
 
   completeTask(id: string, completed: boolean = true): void {
-    // TODO
+    this.history.executeCommand(
+      new CompleteTaskCommand(this.taskList, id, completed),
+    );
   }
 
   undo(): void {
