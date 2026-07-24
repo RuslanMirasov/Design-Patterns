@@ -5,6 +5,9 @@ const allowed = ["info", "warning", "critical"];
 
 export class LevelValidator extends AbstractHandler {
   protected process(record: SystemErrorRecord): SystemErrorRecord {
-    // TODO
+    if (!allowed.includes(record.level)) {
+      throw new Error("Invalid level");
+    }
+    return record;
   }
 }

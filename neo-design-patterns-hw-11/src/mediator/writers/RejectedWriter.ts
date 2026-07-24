@@ -4,9 +4,10 @@ import * as fs from "fs/promises";
 export class RejectedWriter {
   private lines: string[] = [];
   write(record: DataRecord, error: string) {
-    // TODO
+    this.lines.push(JSON.stringify({ record, error }));
   }
   async finalize() {
-    // TODO
+    const content = this.lines.length ? this.lines.join("\n") + "\n" : "";
+    await fs.writeFile("src/output/rejected.jsonl", content);
   }
 }
