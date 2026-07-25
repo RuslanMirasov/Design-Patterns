@@ -90,15 +90,15 @@ AbstractImporter задає порядок дій: спочатку validate, п
 
 ### Factory Method — `src/blocks/BlockFactory.ts`
 
-BlockFactory створює потрібний блок резюме залежно від типу. Метод createBlock(type, model) повертає HeaderBlock, SummaryBlock, ExperienceBlock, EducationBlock або SkillsBlock — усі вони мають однаковий інтерфейс IBlock з методом render(), тому решта коду працює з ними однаково, не знаючи конкретного класу.
+BlockFactory створює потрібний блок резюме залежно від типу. Метод createBlock(type, model) повертає HeaderBlock, SummaryBlock, ExperienceBlock, EducationBlock або SkillsBlock, усі вони мають однаковий інтерфейс IBlock з методом render(), тому решта коду працює з ними однаково, не знаючи конкретного класу.
 
 ### Composite — `src/blocks/ExperienceBlock.ts`, `src/blocks/ProjectBlock.ts`
 
-ExperienceBlock — це контейнер: для кожного місця роботи він рендерить блок з посадою й компанією, а всередину додає дочірні ProjectBlock — по одному на кожен проєкт. ProjectBlock — листовий елемент, усередині якого вже немає дочірніх блоків.
+ExperienceBlock це контейнер: для кожного місця роботи він рендерить блок з посадою й компанією, а всередину додає дочірні ProjectBlock — по одному на кожен проєкт. ProjectBlock - листовий елемент, усередині якого вже немає дочірніх блоків.
 
 ### Decorator — `src/decorators/HighlightDecorator.ts`
 
-HighlightDecorator обгортає готовий блок проєкту й додає йому клас highlight, не змінюючи сам ProjectBlock. У ExperienceBlock таким декоратором обгортаються тільки ті проєкти, в яких isRecent: true — саме вони підсвічуються червоним.
+HighlightDecorator обгортає готовий блок проєкту й додає йому клас highlight, не змінюючи сам ProjectBlock. У ExperienceBlock таким декоратором обгортаються тільки ті проєкти, в яких isRecent: true, саме вони підсвічуються червоним.
 
 ## Як додати новий блок резюме (приклад: «Certificates»)
 
@@ -107,4 +107,4 @@ HighlightDecorator обгортає готовий блок проєкту й д
 3. Додати новий варіант у `BlockType` (`src/blocks/BlockFactory.ts`) і одну гілку `case "certificates": return new CertificatesBlock(m.certificates);` у `createBlock()`.
 4. Додати `"certificates"` у список типів у `ResumeImporter.render()`, щоб блок потрапив у DOM.
 
-Жоден інший клас змінювати не потрібно — це і є розширюваність, яку забезпечують патерни Factory Method та Template Method.
+Жоден інший клас змінювати не потрібн, це і є розширюваність, яку забезпечують патерни Factory Method та Template Method.
