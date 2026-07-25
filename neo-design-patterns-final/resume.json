@@ -1,39 +1,77 @@
 {
   "header": {
-    "fullName": "Ірина Коваленко",
-    "title": "Frontend Engineer",
+    "fullName": "Ruslan Mirasov",
+    "title": "Full-Stack Developer (React / Next.js)",
     "contacts": {
-      "email": "iryna.k@example.com",
-      "phone": "+380 67 123-45-67",
-      "location": "Київ, Україна"
+      "email": "ruslan@mirasov.dev",
+      "phone": "+49 177 839 11 02",
+      "location": "Berlin, Germany"
     }
   },
   "summary": {
-    "text": "Розробляю інтерфейси з 2019 року, спеціалізуюся на TypeScript та React, маю досвід ведення проєктів у міжнародних командах."
+    "text": "Frontend developer with 8+ years of experience building web applications for marketing and digital agencies. Strong foundation in JavaScript ES6+, HTML, and CSS/SCSS, complemented by 2+ years of hands-on work with React, Next.js, TypeScript, and Node.js as a freelance developer. Experienced in responsive UI development, RESTful API integration, and scalable web applications. Currently integrating OpenAI APIs to automate business logic and using Codex and v0 (Vercel) for rapid prototyping while maintaining clean and maintainable code."
   },
   "experience": [
     {
-      "position": "Software Engineer",
-      "company": "SoftServe",
-      "start": "2022‑04",
+      "position": "Freelance",
+      "company": "Master's Program, German Language Trainings & Professional Integration in Germany",
+      "start": "2022-06",
       "end": "now",
+      "projects": []
+    },
+    {
+      "position": "Full-Stack Developer",
+      "company": "Brainst (Project-Based Assignment)",
+      "start": "2018-02",
+      "end": "2022-02",
       "projects": [
         {
-          "name": "E‑commerce Platform",
-          "description": "Міграція фронтенду на TypeScript та Next.js, впровадження SSR.",
+          "name": "InterVizo — AI-Powered Interview Platform (MVP)",
+          "description": "Built an AI-driven video interview platform with OpenAI GPT/Whisper, ElevenLabs TTS, real-time WebSocket audio streaming and Firebase Storage for fully automated candidate screening.",
           "isRecent": true
+        },
+        {
+          "name": "Figma-to-SCSS UI implementation",
+          "description": "Built complex user interfaces, translating Figma designs into responsive SCSS implementations.",
+          "isRecent": false
         }
       ]
     },
     {
-      "position": "Junior Frontend Developer",
-      "company": "EPAM",
-      "start": "2019‑09",
-      "end": "2022‑03",
+      "position": "Frontend Developer",
+      "company": "Beauty Alliance (Part-time)",
+      "start": "2019-02",
+      "end": "2022-02",
       "projects": [
         {
-          "name": "Admin Dashboard",
-          "description": "Створення візуального конструктора звітів.",
+          "name": "Custom WordPress themes",
+          "description": "Developed custom WordPress themes based on unique design mockups for beauty industry projects, extended with WooCommerce, ACF and custom taxonomies.",
+          "isRecent": false
+        }
+      ]
+    },
+    {
+      "position": "Frontend Developer",
+      "company": "Human-Touch (Project-Based Assignment)",
+      "start": "2019-02",
+      "end": "2022-02",
+      "projects": [
+        {
+          "name": "Client landing pages & Telegram apps",
+          "description": "Delivered responsive, interactive frontend for landing pages, promotional websites and Telegram apps based on detailed Figma designs, collaborating with backend developers on .NET-based projects.",
+          "isRecent": false
+        }
+      ]
+    },
+    {
+      "position": "Frontend Developer",
+      "company": "Mokselle (Remote)",
+      "start": "2015-09",
+      "end": "2018-01",
+      "projects": [
+        {
+          "name": "40+ marketing campaign sites",
+          "description": "Delivered over 40 client projects — promo websites, landing pages, HTML email campaigns, display banners and interactive quizzes — using JavaScript, jQuery and AJAX for dynamic UI.",
           "isRecent": false
         }
       ]
@@ -41,27 +79,61 @@
   ],
   "education": [
     {
-      "degree": "Магістр",
-      "field": "Комп’ютерні науки",
-      "institution": "КНУ імені Тараса Шевченка",
-      "graduation": "2019"
+      "degree": "Master of Science",
+      "field": "Computer Science: Software Engineering and AI",
+      "institution": "Neoversity (Woolf University), Malta",
+      "graduation": "expected 2028"
+    },
+    {
+      "degree": "Web Development Bootcamp",
+      "field": "Full-time Intensive Course",
+      "institution": "Spiced Academy, Berlin",
+      "graduation": "2024"
+    },
+    {
+      "degree": "Fullstack Developer Course",
+      "field": "Online",
+      "institution": "GoIT Global, Kyiv",
+      "graduation": "2024"
+    },
+    {
+      "degree": "Web Developer Basic Course",
+      "field": "Online",
+      "institution": "National Training Center for Programming",
+      "graduation": "2015"
+    },
+    {
+      "degree": "Diploma in Mechanical Engineering",
+      "field": "Mechanical Engineering",
+      "institution": "Pryazovskyi State Technical University, Ukraine",
+      "graduation": "2011"
     }
   ],
   "skills": {
     "core": [
-      "TypeScript",
       "React",
-      "HTML5",
-      "CSS Modules"
+      "Next.js",
+      "TypeScript",
+      "JavaScript",
+      "Zustand",
+      "Redux Toolkit",
+      "HTML",
+      "CSS/SCSS"
     ],
     "tools": [
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "PostgreSQL",
       "Git",
-      "Webpack",
-      "Jest"
+      "GitHub",
+      "Figma",
+      "Postman"
     ],
     "languages": [
-      "Ukrainian (рідна)",
-      "English (B2)"
+      "English (B2)",
+      "German (B2)",
+      "Ukrainian (Native)"
     ]
   }
 }

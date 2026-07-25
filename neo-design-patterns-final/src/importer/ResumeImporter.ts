@@ -5,17 +5,28 @@
 
 import { AbstractImporter } from "./AbstractImporter";
 import { ResumeModel } from "../models/ResumeModel";
-import { BlockFactory } from "../blocks/BlockFactory";
+import { BlockFactory, BlockType } from "../blocks/BlockFactory";
 
 export class ResumeImporter extends AbstractImporter<ResumeModel> {
   /**
    * Перевіряє, чи відповідає JSON-об'єкт очікуваній структурі
-   *
-   * TODO: Реалізуйте валідацію JSON-даних резюме.
-   * Перевірте наявність необхідних полів (header, summary, experience, education, skills)
    */
   protected validate(): void {
-    // TODO: Додайте перевірки на наявність обов'язкових полів та їх структуру. Неприпустимий формат JSON
+    const data = this.raw as Partial<ResumeModel> | null | undefined;
+    const requiredFields: (keyof ResumeModel)[] = [
+      "header",
+      "summary",
+      "experience",
+      "education",
+      "skills",
+    ];
+
+    const missingField = requiredFields.find((field) => data?.[field] === undefined);
+    if (!data || missingField) {
+      throw new Error(
+        `Неприпустимий формат JSON: відсутнє обов'язкове поле "${missingField}"`,
+      );
+    }
   }
 
   /**
@@ -28,14 +39,21 @@ export class ResumeImporter extends AbstractImporter<ResumeModel> {
 
   /**
    * Рендерить модель резюме у DOM
-   *
-   * TODO: Реалізуйте рендеринг моделі у DOM-дерево
    */
   protected render(model: ResumeModel): void {
     const root = document.getElementById("resume-content")!;
-    // TODO: Створіть фабрику і використайте її для створення і рендерингу блоків
     const factory = new BlockFactory();
 
-    // TODO: Створіть і додайте у DOM кожен блок резюме
+    const blockTypes: BlockType[] = [
+      "header",
+      "summary",
+      "experience",
+      "education",
+      "skills",
+    ];
+
+    for (const type of blockTypes) {
+      root.appendChild(factory.createBlock(type, model).render());
+    }
   }
 }

@@ -5,12 +5,15 @@ import { ResumeImporter } from "../importer/ResumeImporter";
  */
 export class ResumePage {
   async init(jsonPath: string): Promise<void> {
-    // TODO: Завантажити дані через fetchData
-    // TODO: Імпортувати дані через ResumeImporter
+    const data = await this.fetchData(jsonPath);
+    new ResumeImporter(data).import();
   }
 
   private async fetchData(path: string): Promise<unknown> {
-    // TODO: Завантажити JSON з вказаного шляху
-    return {};
+    const response = await fetch(path);
+    if (!response.ok) {
+      throw new Error(`Не вдалося завантажити "${path}": ${response.statusText}`);
+    }
+    return response.json();
   }
 }

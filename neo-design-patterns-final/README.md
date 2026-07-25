@@ -12,7 +12,7 @@
 - Створювати модульну, розширювану архітектуру
 - Структурувати код з використанням патернів
 
-Необхідно сформувати самодостатню HTML‑сторінку‑резюме, яка будується з єдиного джерела даних — файл `resume.json`. Усі стилі фіксовані у `styles.css`, сторонніх бібліотек або фреймворків не використовуємо. Після компіляції `main.ts` і відкриття `index.html` сторінка повинна безпомилково відобразити повне резюме, а проєкти з прапорцем `"isRecent": true` — підсвітити червоним.
+Необхідно сформувати самодостатню HTML‑сторінку‑резюме, яка будується з єдиного джерела даних - файл `resume.json`. Усі стилі фіксовані у `styles.css`, сторонніх бібліотек або фреймворків не використовуємо. Після компіляції `main.ts` і відкриття `index.html` сторінка повинна безпомилково відобразити повне резюме, а проєкти з прапорцем `"isRecent": true` — підсвітити червоним.
 
 ## Структура проекту
 
@@ -77,3 +77,34 @@
 - Патерни проектування
 - JSON для зберігання даних
 - CSS для стилізації
+
+## Реалізація патернів
+
+### Facade — `src/facade/ResumePage.ts`
+
+Клас ResumePage — єдина точка входу в застосунок. Метод init(jsonPath) завантажує resume.json і одразу передає дані далі в ResumeImporter. Іншому коду (main.ts) не потрібно знати, як саме відбувається завантаження чи побудова сторінки — досить викликати один метод.
+
+### Template Method — `src/importer/AbstractImporter.ts`, `src/importer/ResumeImporter.ts`
+
+AbstractImporter задає порядок дій: спочатку validate, потім map, потім render. ResumeImporter — конкретна реалізація цих кроків: validate() перевіряє, що в JSON є всі потрібні блоки (header, summary, experience, education, skills), map() перетворює JSON у типізовану модель ResumeModel, а render() створює блоки резюме через BlockFactory і додає їх на сторінку.
+
+### Factory Method — `src/blocks/BlockFactory.ts`
+
+BlockFactory створює потрібний блок резюме залежно від типу. Метод createBlock(type, model) повертає HeaderBlock, SummaryBlock, ExperienceBlock, EducationBlock або SkillsBlock — усі вони мають однаковий інтерфейс IBlock з методом render(), тому решта коду працює з ними однаково, не знаючи конкретного класу.
+
+### Composite — `src/blocks/ExperienceBlock.ts`, `src/blocks/ProjectBlock.ts`
+
+ExperienceBlock — це контейнер: для кожного місця роботи він рендерить блок з посадою й компанією, а всередину додає дочірні ProjectBlock — по одному на кожен проєкт. ProjectBlock — листовий елемент, усередині якого вже немає дочірніх блоків.
+
+### Decorator — `src/decorators/HighlightDecorator.ts`
+
+HighlightDecorator обгортає готовий блок проєкту й додає йому клас highlight, не змінюючи сам ProjectBlock. У ExperienceBlock таким декоратором обгортаються тільки ті проєкти, в яких isRecent: true — саме вони підсвічуються червоним.
+
+## Як додати новий блок резюме (приклад: «Certificates»)
+
+1. Додати тип даних у `src/models/ResumeModel.ts` (наприклад, `Certificate` і поле `certificates: Certificate[]` у `ResumeModel`).
+2. Створити клас `src/blocks/CertificatesBlock.ts`, що реалізує `IBlock` і рендерить власну секцію.
+3. Додати новий варіант у `BlockType` (`src/blocks/BlockFactory.ts`) і одну гілку `case "certificates": return new CertificatesBlock(m.certificates);` у `createBlock()`.
+4. Додати `"certificates"` у список типів у `ResumeImporter.render()`, щоб блок потрапив у DOM.
+
+Жоден інший клас змінювати не потрібно — це і є розширюваність, яку забезпечують патерни Factory Method та Template Method.
